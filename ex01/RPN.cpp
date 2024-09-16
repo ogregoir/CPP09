@@ -23,41 +23,14 @@ RPN::RPN(const RPN &copy) {
 RPN& RPN::operator=(const RPN &copy) {
 	
 	if (this != &copy)
-		this->stack = copy.stack;
+		this->nbr = copy.nbr;
 	return *this;
 }
 
 RPN::~RPN() {
 
 }
-
-/*int verif_input(char *str)
-{
-	//int nbr;
-	std::string op(str);
-
-	if(strlen(str) == 1)
-	{
-		if (str[0] > 47 && str[0] < 57)
-		{
-			//nbr = atoi.op();
-			std::cout << "print" << op << std::endl;
-		}
-		else
-		{
-
-		}
-			
-		
-	}
-	else
-	{
-		std::cout << "not good" << op << std::endl;
-	}
-	return 0;
-
-}
-
+/*
 void print_stack()
 {
 	while (!stack.empty())
@@ -75,9 +48,9 @@ int    RPN::parse_input(std::string input)
 		std::cerr << "Error: bad arguments." << std::endl;
 		return 1;
 	}
-	for (int i = 0; input[i]; ++i)
+	for (unsigned int i = 0; input[i]; ++i)
 	{
-		if (input[i] == 32 && input[i + 1] == 32)
+		if (input[i] == 32 && input[i + 1] == 32 && input[i + 1])
 		{
 			std::cerr << "Error: bad arguments." << std::endl;
 			status = 1;
@@ -96,21 +69,28 @@ int    RPN::parse_input(std::string input)
 
 void RPN::calculRPN(std::string input)
 {
-	std::cout << "input = " << input << std::endl;
-	int i = 1;
+	//std::cout << "input = " << input << std::endl;
+	unsigned int i = 0;
 	int res;
 	if(parse_input(input) == 0)
 	{
-		while(input[i])
+		//std::cout << "PASS" << std::endl;
+		while(input[i] && i < input.size())
 		{
 			res = 0;
+			std::cout << "PASS" << std::endl;
 			if (isdigit(input[i]))
 			{
-				stack.push(input[i] - 48);
+				nbr.push(input[i] - 48);
 			}
-			else
+			else if (input[i] != 32)
 			{
-				res = stack.top();
+				while (!nbr.empty())
+				{
+					std::cout << "stack = " << nbr.top() << " ";
+					nbr.pop();
+				}
+				/*res = stack.top();
 				std::cout << "res = " << res << std::endl;
 				stack.pop();
 				if (input[i] == '+')
@@ -120,7 +100,7 @@ void RPN::calculRPN(std::string input)
 						res += stack.top();
 						stack.pop();
 					}
-				}
+				}*/
 			}
 			i++;
 		}
