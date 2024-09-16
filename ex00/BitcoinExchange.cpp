@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 15:55:41 by ogregoir          #+#    #+#             */
-/*   Updated: 2024/09/12 01:14:40 by marvin           ###   ########.fr       */
+/*   Updated: 2024/09/12 18:29:44 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,14 @@ std::map<std::string, double> BitcoinExchange::init_data()
 
     std::map<std::string, double> map;
     data_og.open("data.csv",  std::ios::in);
-
+    
     while(std::getline(data_og, save))
     {
         date = save.substr(0, save.find(','));
         value = atof(save.substr(save.find(',') + 1, save.size()).c_str() + 1);
-        data.insert(std::make_pair(date, value));
+        map.insert(std::make_pair(date, value));
     }
+    data_og.close();
     return map;
 }
 
@@ -97,29 +98,56 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange &copy)
     return *this;
 }
 
+void    BitcoinExchange::convert_btc(std::string date, std::string value, BitcoinExchange *acc)
+{
+    double  val = atof(value.c_str());
+    double  op = 0;
+    
+    date.erase(std::remove(date.begin(), date.end(), ' '), date.end());
+    
+    std::map<std::string, double>::iterator it = acc->data.find(date);
+    if (it == acc->data.end())
+    {
+        it = acc->data.lower_bound(date);
+        if (it == acc->data.begin()) 
+        {
+            std::cerr << "Error: Date is earlier than the earliest available record." << std::endl;
+            return;
+        }
+        else
+            --it;
+    }
+    op = it->second * val;
+    std::cout << date << " => " << value << " = " << op << std::endl;
+}
+
 int    BitcoinExchange::parse_input(char **argv)
 {
     std::string     save;
     std::ifstream   inputFile(argv[1]);
     std::string     date;
     std::string     value;
-    
+    BitcoinExchange *acc(this);
+
     if (!inputFile.is_open())
     {
         std::cerr << "Error: unable to open file" << std::endl;
         return 1;
     }
+    std::getline(inputFile, save);
+    if (save.find("date ") && save.find("value"))
+    {
+        std::cerr << "Error: miss \"date | value\" in inputfile." << std::endl;
+        return 0;
+    }
     while(std::getline(inputFile, save))
     {
         date = save.substr(0, save.find('|'));
         value = save.substr(save.find('|') + 1, save.size());
-        if (date.compare("date ") && value.compare("value"))
-        {
-            if (verif_files(date, value) != 0)
-                std::exception();
-            else
-                std::cout << save << std::endl;
-        }
+        if (verif_files(date, value) != 0)
+            std::exception();
+        else 
+            convert_btc(date, value, acc);
     }
     return 0;
 }

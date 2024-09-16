@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 15:56:01 by ogregoir          #+#    #+#             */
-/*   Updated: 2024/09/12 00:48:45 by marvin           ###   ########.fr       */
+/*   Updated: 2024/09/12 17:58:36 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ class BitcoinExchange
         BitcoinExchange& operator=(const BitcoinExchange &copy);
         ~BitcoinExchange();
         int    parse_input(char **argv);
+        void    convert_btc(std::string date, std::string value, BitcoinExchange *acc);
         std::map<std::string, double> init_data();
 };
 
