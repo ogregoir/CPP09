@@ -10,9 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Pmerge.cpp"
+#include "Pmerge.hpp"
 
-int main()
+int main(int argc, char **argv)
 {
+    Pmerge coucou;
+    if(argc > 1)
+    {
+        coucou.sort_vec(argv);
+    }
     return 0;
 }

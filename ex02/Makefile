@@ -1,4 +1,4 @@
-NAME	=		RPmergeMe
+NAME	=		PmergeMe
 
 CFLAGS	=		-Wall -Werror -Wextra	-std=c++98 -fsanitize=address
 
@@ -7,7 +7,7 @@ CC		=		c++
 RM		=		rm -rf
 
 SRCS	=		main.cpp \
-				RPN.cpp \
+				Pmerge.cpp \
 
 OBJC = ${SRCS:.cpp=.o}
 

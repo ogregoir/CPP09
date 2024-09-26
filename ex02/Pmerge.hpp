@@ -10,12 +10,26 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once 
+#pragma once
+
+#include <vector>
+#include <algorithm>
+#include <iostream>
+#include <iterator>
+#include <cctype>
+#include <limits>
+#include <cstdlib>
 
 class Pmerge
 {
-    Pmerge();
-    Pmerge(const Pmerge &copy);
-    Pmerge& operator=(const Pmerge &copy);
-    ~Pmerge();
+    private :
+        std::vector<int>    listvec;
+
+    public :
+        Pmerge();
+        Pmerge(const Pmerge &copy);
+        Pmerge& operator=(const Pmerge &copy);
+        ~Pmerge();
+        void    sort_vec(char **argv);
+        void    sort_list(std::vector< std::vector<int> > &pair);
 };
