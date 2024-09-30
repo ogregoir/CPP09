@@ -51,38 +51,64 @@ std::vector<int>    parse(std::string list, std::vector<int> temp)
     temp.push_back(number);
     return temp;
 }
-/*
-void    Pmerge::sort_list(std::vector< std::vector<int> > &pair)
+
+void    sort_list(std::vector< std::vector<int> > &pair)
 {
-    for (size_t i = 0; i < pair.size() - 1; i++)
+    for(size_t i = 0; i < pair.size() - 1; i++)
     {
         if (pair[i + 1].size() > 1 && pair[i][0] > pair[i + 1][0])
             std::swap(pair[i], pair[i + 1]);
     }
     for (size_t i = 0; i < pair.size() - 1; i++)
-        sort_list(pair);*/
-    /*std::vector<int> min;
+    {
+        if (pair[i + 1].size() > 1 && pair[i][0] > pair[i + 1][0])
+            sort_list(pair);
+    }
+}
 
-    std::cout << "size = " << size << std::endl;
-    if (i == size)
-        return min;
-    std::cout << pair[i][0] << std::endl;
-    if (listvec.empty())
+void    Pmerge::create_index(std::vector<int> pend, std::vector<double> jacob)
+{ 
+    double save = 0;
+    size_t j = 3;
+    size_t  pend_size = pend.size() + 1;
+
+    while(index.size() < pend_size && j < jacob.size())
     {
-        listvec.push_back(pair[i][0]);
-       // min.push_back(pair[i][1]);
-    }   
-    else if (pair[i][0] > listvec[0])
-    {
-        listvec.insert(listvec.end(), pair[i][0]);
-        //min.push_back(pair[i][1]);
+        save = jacob[j];
+        if (std::find(index.begin(), index.end(), save) == index.end())
+            index.push_back(save);
+        else
+            save--;
+        while(save > 1 && index.size() < pend_size)
+        {
+            if (std::find(index.begin(), index.end(), save) == index.end())
+                index.push_back(save);
+            save--;
+        }
+        j++;
     }
-    else
-    {
-        listvec.insert(listvec.begin(), pair[i][0]);
-       // min.insert(listvec.begin(), pair[i][1]);
-    }
-}*/
+
+}
+
+std::vector<int>    Pmerge::make_list(std::vector< std::vector<int> > &pair)
+{
+    std::vector<int> pend;
+    std::vector<double> jacob;
+
+    for(size_t i = 0; i < pair.size(); i++)
+        this->listvec.push_back(pair[i][0]);
+    for (size_t i = 0; i < pair.size(); i++)
+        pend.push_back(pair[i][1]);
+    if (pair[0][0] > pair[0][1]) 
+        listvec.insert(listvec.begin(), pair[0][1]);
+    jacob.push_back(0);
+    jacob.push_back(1);
+    for (size_t i = 2; i < pend.size() + 4; i++)
+        jacob.push_back(jacob[i - 1] + (2 * jacob[i - 2]));
+    this->index.push_back(jacob[3]);
+    create_index(pend, jacob);
+    return pend;
+}
 
 void    Pmerge::sort_vec(char **argv)
 {
@@ -90,6 +116,7 @@ void    Pmerge::sort_vec(char **argv)
     std::vector<int>    temp;
     size_t index = 0;
     size_t  size = 0;
+    std::vector<int> pend;
 
     for(int i = 1; argv[i]; i++)
         temp = parse(argv[i], temp);
@@ -100,19 +127,10 @@ void    Pmerge::sort_vec(char **argv)
         size = (temp.size() / 2) + 1;
     pair.resize(size);
     std::cout << "Before: ";
+    for (size_t i = 0; i < 5; i++)
+        std::cout << temp[i] << " ";
     if (temp.size() > 5)
-    {
-        for (size_t i = 0; i < 5; i++)
-            std::cout << temp[i] << " ";
         std::cout << "[...]" << std::endl;
-    }
-    else
-    {
-        for (size_t i = 0; i < 5; i++)
-            std::cout << temp[i] << " ";
-        std::cout << std::endl;
-    }
-        
     for(size_t i = 0; i < size; i++)
     {
         if (index + 1 < temp.size())
@@ -132,7 +150,8 @@ void    Pmerge::sort_vec(char **argv)
             pair[i].push_back(temp[index]);
         index += 2;
     }
-    //sort_list(pair);
+    sort_list(pair);
+    pend = make_list(pair);
     /*for (size_t i = 0; i < size; i++)
        listvec.push_back(pair[i][0]);
     std::sort(listvec.begin(), listvec.end());
@@ -146,5 +165,7 @@ void    Pmerge::sort_vec(char **argv)
     std::cout << std::endl; 
     }*/
    /* for (size_t i = 0; i < listvec.size(); i++)
-        std::cout << "listvec = " << listvec[i] << std::endl;*/
+        std::cout << "listvec = " << listvec[i] << std::endl;
+    for (size_t i = 0; i < pend.size(); i++)
+        std::cout << "pend = " << pend[i] << std::endl;*/
 }

@@ -24,6 +24,7 @@ class Pmerge
 {
     private :
         std::vector<int>    listvec;
+        std::vector<double>    index;
 
     public :
         Pmerge();
@@ -31,5 +32,6 @@ class Pmerge
         Pmerge& operator=(const Pmerge &copy);
         ~Pmerge();
         void    sort_vec(char **argv);
-        void    sort_list(std::vector< std::vector<int> > &pair);
+        void    create_index(std::vector<int> pend, std::vector<double> jacob);
+        std::vector<int>    make_list(std::vector< std::vector<int> > &pair);
 };
