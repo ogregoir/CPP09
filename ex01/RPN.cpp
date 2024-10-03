@@ -30,15 +30,6 @@ RPN& RPN::operator=(const RPN &copy) {
 RPN::~RPN() {
 
 }
-/*
-void print_stack()
-{
-	while (!stack.empty())
-	{
-		std::cout << stack.top() << " ";
-		stack.pop();
-	}
-}*/
 
 int    RPN::parse_input(std::string input)
 {
@@ -57,7 +48,6 @@ int    RPN::parse_input(std::string input)
 		}
 		if ((isdigit(input[i]) || (input[i] == '+' || input[i] == '-' || input[i] == '*' || input[i] == '/')) && input[i] != 32)
 		{
-			std::cout << input[i] << std::endl;
 			if (input[i + 1] != 32 && input[i + 1])
 				status = 1;
 		}
@@ -69,38 +59,40 @@ int    RPN::parse_input(std::string input)
 
 void RPN::calculRPN(std::string input)
 {
-	//std::cout << "input = " << input << std::endl;
 	unsigned int i = 0;
 	int res;
 	if(parse_input(input) == 0)
 	{
-		//std::cout << "PASS" << std::endl;
 		while(input[i] && i < input.size())
 		{
 			res = 0;
-			std::cout << "PASS" << std::endl;
 			if (isdigit(input[i]))
 			{
 				nbr.push(input[i] - 48);
 			}
 			else if (input[i] != 32)
 			{
-				while (!nbr.empty())
+				if(nbr.size() >= 2)
 				{
-					std::cout << "stack = " << nbr.top() << " ";
+					res = nbr.top();
 					nbr.pop();
+					if (input[i] == '+')
+						res += nbr.top();
+					else if (input[i] == '-')
+						res -= nbr.top();
+					else if (input[i] == '*')
+						res *= nbr.top();
+					else if (input[i] == '/')
+						res /= nbr.top();
+					if(res > DBL_MAX)
+						throw std::exception();
+					nbr.pop();
+					nbr.push(res);
 				}
-				/*res = stack.top();
-				std::cout << "res = " << res << std::endl;
-				stack.pop();
-				if (input[i] == '+')
+				else
 				{
-					while (stack.top())
-					{
-						res += stack.top();
-						stack.pop();
-					}
-				}*/
+					std::cerr << "Error: calculation is not possible" << std::endl;
+				}
 			}
 			i++;
 		}
@@ -110,5 +102,8 @@ void RPN::calculRPN(std::string input)
 		std::cerr << "Error: bad arguments." << std::endl;
 		return ;
 	}
-		
+	if (nbr.size() != 1)
+		std::cerr << "Error: calculation is not possible" << std::endl;
+	else
+		std::cout << nbr.top() << std::endl;
 }

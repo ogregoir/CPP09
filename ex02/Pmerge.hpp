@@ -1,34 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   RPN.hpp                                            :+:      :+:    :+:   */
+/*   Pmerge.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/13 13:35:32 by marvin            #+#    #+#             */
-/*   Updated: 2024/09/13 13:35:32 by marvin           ###   ########.fr       */
+/*   Created: 2024/09/16 18:09:36 by marvin            #+#    #+#             */
+/*   Updated: 2024/09/16 18:09:36 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
+#include <vector>
+#include <algorithm>
 #include <iostream>
-#include <stack>
+#include <iterator>
 #include <cctype>
+#include <limits>
 #include <cstdlib>
-#include <string>
-#include <cfloat>
 
-class RPN
+class Pmerge
 {
     private :
-        std::stack<double> nbr;
-    public :
+        std::vector<int>    listvec;
+        std::vector<double>    index;
 
-        RPN();
-        RPN(const RPN &copy);
-        RPN& operator=(const RPN &copy);
-        ~RPN();
-        void calculRPN(std::string input);
-        int parse_input(std::string input);
+    public :
+        Pmerge();
+        Pmerge(const Pmerge &copy);
+        Pmerge& operator=(const Pmerge &copy);
+        ~Pmerge();
+        void    sort_vec(char **argv);
+        void    create_index(std::vector<int> pend, std::vector<double> jacob);
+        std::vector<int>    make_list(std::vector< std::vector<int> > &pair);
 };
