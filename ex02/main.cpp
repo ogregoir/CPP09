@@ -14,10 +14,13 @@
 
 int main(int argc, char **argv)
 {
-    Pmerge coucou;
+    Pmerge bob;
     if(argc > 1)
     {
-        coucou.sort_vec(argv);
+        bob.sort_vec(argv);
+        bob.sort_deq(argv);
     }
+    else
+        std::cout << "Not enough arguments" << std::endl;
     return 0;
 }
