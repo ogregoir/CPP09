@@ -13,6 +13,7 @@
 #pragma once
 
 #include <iostream>
+#include <limits.h>
 #include <stack>
 #include <cctype>
 #include <cstdlib>
