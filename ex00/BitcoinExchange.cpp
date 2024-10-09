@@ -6,7 +6,7 @@
 /*   By: ogregoir <ogregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 15:55:41 by ogregoir          #+#    #+#             */
-/*   Updated: 2024/10/09 15:45:44 by ogregoir         ###   ########.fr       */
+/*   Updated: 2024/10/09 15:49:02 by ogregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int verif_files(std::string date, std::string value)
 
 	value.erase(std::remove(value.begin(), value.end(), ' '), value.end());
 	double val = atof(value.c_str());
-	if (val < 0)
+	if (val < 0 || value == "-0")
 	{
 		std::cerr << "Error: not a positive number." << std::endl;
 		return 1;
