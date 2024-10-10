@@ -21,6 +21,7 @@
 #include <limits>
 #include <cstdlib>
 #include <ctime>
+#include <sstream>
 
 class Pmerge
 {
