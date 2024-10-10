@@ -77,21 +77,19 @@ void    sort_list_vec(std::vector< std::vector<int> > &pair)
 
 void    Pmerge::create_index_vec(std::vector<int> pend, std::vector<double> jacob)
 {
-    size_t j = 2;
     size_t ind;
-    for (size_t i = 0; i < pend.size(); i++)
+    
+    for (size_t i = 2; index.size() < pend.size(); i++)
     {
-        ind = jacob[j];
+        ind = jacob[i];
         if (ind > 1)
             this->index.push_back(ind);
         ind--;
-        while (jacob[j - 1] && ind != jacob[j - 1] && ind > 1)
+        while (jacob[i - 1] && ind != jacob[i - 1] && ind > 1)
         {
             this->index.push_back(ind);
             ind--;
         }
-        j++;
-
     }
 }
 
