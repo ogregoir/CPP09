@@ -31,5 +31,5 @@ class RPN
         RPN& operator=(const RPN &copy);
         ~RPN();
         void calculRPN(std::string input);
-        int parse_input(std::string input);
+        void parse_input(std::string input);
 };
