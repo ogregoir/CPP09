@@ -41,23 +41,21 @@ Pmerge& Pmerge::operator=(const Pmerge &copy) {
 
 std::vector<int>    parse_vec(std::string list, std::vector<int> temp)
 {
-    std::stringstream ss(list);
-    int number;
-
-    if (ss >> number)
+    for (size_t i = 0; i < list.size(); i++)
     {
-        if (number < 0)
+        if (!std::isdigit(list[i]) )
         {
-            std::cerr << "Error: number is not positive" << std::endl;
+            std::cerr << "Error: list not numeric" << std::endl;
             exit(1);
         }
-        temp.push_back(number);
-    } 
-    else
+    }
+    int number = atoi(list.c_str());
+    if (number < 0 || number > 2147483647)
     {
-        std::cerr << "Error: list not numeric" << std::endl;
+        std::cerr << "Error: number is not enter" << std::endl;
         exit(1);
     }
+    temp.push_back(number);
     return temp;
 }
 

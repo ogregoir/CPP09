@@ -6,7 +6,7 @@
 /*   By: ogregoir <ogregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 15:57:22 by ogregoir          #+#    #+#             */
-/*   Updated: 2024/09/16 15:11:54 by ogregoir         ###   ########.fr       */
+/*   Updated: 2024/10/10 15:00:30 by ogregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int main(int argc, char **argv)
         }
 		catch(const std::exception& e)
 		{
-			std::cerr << e.what() << '\n';
+			std::cerr << "Error: bad arguments" << '\n';
 		}
     }  
     else
