@@ -18,7 +18,7 @@ int main(int argc, char **argv)
     if(argc > 1)
     {
         bob.sort_vec(argv);
-        //bob.sort_deq(argv);
+        bob.sort_deq(argv);
     }
     else
         std::cout << "Error: bad arguments" << std::endl;
