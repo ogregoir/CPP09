@@ -102,8 +102,10 @@ void RPN::calculRPN(std::string input)
 				}
 			}
 			else
-				throw std::exception();
-
+			{
+				std::cerr << "Error: there are too many operators" << std::endl;
+				exit(1);
+			}
 		}
 		i++;
 	}

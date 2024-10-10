@@ -6,7 +6,7 @@
 /*   By: ogregoir <ogregoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 15:55:41 by ogregoir          #+#    #+#             */
-/*   Updated: 2024/10/10 15:36:31 by ogregoir         ###   ########.fr       */
+/*   Updated: 2024/10/10 18:07:47 by ogregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int verif_files(std::string date, std::string value)
 		std::cerr << "Error : date : is incorrect" << std::endl;
 		return 1;
 	}
-	
 	int y = atoi(year.c_str()); 
 	int m = atoi(month.c_str());
 	int d = atoi(day.c_str());
@@ -43,7 +42,6 @@ int verif_files(std::string date, std::string value)
 		std::cerr << "Error: bad input => " << date << std::endl;
 		return 1;
 	}
-
 	value.erase(std::remove(value.begin(), value.end(), ' '), value.end());
 	double val = atof(value.c_str());
 	if (val < 0 || value[0] == '-')
@@ -146,6 +144,8 @@ int    BitcoinExchange::parse_input(char **argv)
 		value = save.substr(save.find('|') + 1, save.size());
 		if (verif_files(date, value) != 0)
 			std::exception();
+		else if (std::count(save.begin(), save.end(), '|') != 1)
+			std::cerr << "Error: format is invalid" << std::endl;
 		else 
 			convert_btc(date, value, acc);
 	}
