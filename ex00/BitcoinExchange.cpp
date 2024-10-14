@@ -6,7 +6,7 @@
 /*   By: ogregoir <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 15:55:41 by ogregoir          #+#    #+#             */
-/*   Updated: 2024/10/14 16:23:14 by ogregoir         ###   ########.fr       */
+/*   Updated: 2024/10/14 19:27:46 by ogregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,10 @@ int verif_files(std::string date, std::string value)
 	
 	if (y < 2009 || y > 2024 || m <= 0 || m > 12 || d <= 0 || d > 31)
 	{
-		std::cerr << "Error: bad input => " << date << std::endl;
+		if (y < 2009 || y > 2024)
+			std::cerr << "Error: Date is earlier than the earliest available record." << std::endl;
+		else
+			std::cerr << "Error: bad input => " << date << std::endl;
 		return 1;
 	}
 	if (m % 2 == 0 && d > 30)
@@ -84,14 +87,14 @@ int verif_files(std::string date, std::string value)
 	{
 		if (!isdigit(value[i]) && value[i] != '.' && value[i] != 32 && value[i] != '\r')
 		{
-			if (value[i] == '-')
+			if (value[0] == '-')
 				std::cerr << "Error: not a positive number." << std::endl;
 			else
 				std::cerr << "Error: format is invalid" << std::endl;
 			return 1;
 		}	
 	}
-	if (value.find('.') == 0)
+	if (value.find('.') != std::string::npos)
 	{
 		if (std::count(value.begin(), value.end(), '.') != 1)
 		{
@@ -100,11 +103,6 @@ int verif_files(std::string date, std::string value)
 		}
 	}
 	double val = atof(value.c_str());
-	if (val < 0)
-	{
-		std::cerr << "Error: not a positive number." << std::endl;
-		return 1;
-	}
 	if (val > 1000)
 	{
 		std::cerr << "Error: too large a number." << std::endl;
@@ -197,8 +195,8 @@ int    BitcoinExchange::parse_input(char **argv)
 		return 1;
 	}
 	std::getline(inputFile, save);
-	if (save.find("date ") && save.find("value"))
-		ft_error("Error: \"input\" : miss \"date | value\" in inputfile.");
+	if (save.find("date | value"))
+		ft_error("Error: bad input => \"date | value\"");
 	while(std::getline(inputFile, save))
 	{
 		if (std::count(save.begin(), save.end(), '|') != 1 || (!save.find('|') - 1 == ' ' && !save.find('|') + 1 != ' ') || std::count(save.begin(), save.end(), ' ') != 2)
@@ -207,7 +205,7 @@ int    BitcoinExchange::parse_input(char **argv)
 		{
 			date = save.substr(0, save.find('|') - 1);
 			value = save.substr(save.find('|') + 2, save.size());
-			if(date.empty() || value.empty())
+			if(date[0] == 13 || value[0] == 13)
 				std::cerr << "Error: format is invalid" << std::endl;
 			else if (verif_files(date, value) != 0)
 				std::exception();
