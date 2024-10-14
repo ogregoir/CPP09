@@ -6,7 +6,7 @@
 /*   By: ogregoir <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 15:55:41 by ogregoir          #+#    #+#             */
-/*   Updated: 2024/10/12 16:44:02 by ogregoir         ###   ########.fr       */
+/*   Updated: 2024/10/14 16:01:21 by ogregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ int verif_files(std::string date, std::string value)
 	{
 		if (!isdigit(date[i]) && date[i] != '-')
 		{
-			std::cerr << "Error: format is invalid"<< std::endl;
+			std::cerr << "Error: format is invalid" << std::endl;
 			return 1;
 		}	
 	}
 	if (std::count(date.begin(), date.end(), '-') != 2)
 	{
-		std::cerr << "Error: format is invalid"<< std::endl;
+		std::cerr << "Error: format is invalid" << std::endl;
 		return 1;
 	}
 	
@@ -54,7 +54,7 @@ int verif_files(std::string date, std::string value)
 	int m = atoi(month.c_str());
 	int d = atoi(day.c_str());
 	
-	if (y < 2009 || y > 2024 || m < 0 || m > 12 || d < 0 || d > 31)
+	if (y < 2009 || y > 2024 || m <= 0 || m > 12 || d <= 0 || d > 31)
 	{
 		std::cerr << "Error: bad input => " << date << std::endl;
 		return 1;
@@ -82,19 +82,22 @@ int verif_files(std::string date, std::string value)
 	}
 	for (size_t i = 0; i < value.size(); i++)
 	{
-		if (!isdigit(value[i]) && value[i] != '.')
+		if (!isdigit(value[i]) && value[i] != '.' && value[i] != 32 && value[i] != '\r')
 		{
-			std::cerr << "Error: format is invalid"<< std::endl;
+			std::cerr << "Error: format is invalid" << std::endl;
 			return 1;
 		}	
 	}
-	if (std::count(value.begin(), value.end(), '.') != 1)
+	if (value.find('.') == 0)
 	{
-		std::cerr << "Error: format is invalid"<< std::endl;
-		return 1;
+		if (std::count(value.begin(), value.end(), '.') != 1)
+		{
+			std::cerr << "Error: format is invalid"<< std::endl;
+			return 1;
+		}
 	}
 	double val = atof(value.c_str());
-	if (val < 0 || value[0] == '-')
+	if (val < 0)
 	{
 		std::cerr << "Error: not a positive number." << std::endl;
 		return 1;
@@ -182,7 +185,7 @@ int    BitcoinExchange::parse_input(char **argv)
 	std::string     save;
 	std::ifstream   inputFile(argv[1]);
 	std::string     date;
-	bool			space = true;
+	//bool			space = true;
 	std::string     value;
 	BitcoinExchange *acc(this);
 
@@ -196,23 +199,13 @@ int    BitcoinExchange::parse_input(char **argv)
 		ft_error("Error: \"input\" : miss \"date | value\" in inputfile.");
 	while(std::getline(inputFile, save))
 	{
-		if (std::count(save.begin(), save.end(), '|') != 1 || (save.find(' ') != 10 && save.find(' ') != 12))
-			std::cerr << "Error: format is invalid" << std::endl;
+		if (std::count(save.begin(), save.end(), '|') != 1 || (!save.find('|') - 1 == ' ' && !save.find('|') + 1 != ' ') || std::count(save.begin(), save.end(), ' ') != 2)
+			std::cerr << "Error: bad input => " << save.substr(0) << std::endl;
 		else
 		{
 			date = save.substr(0, save.find('|') - 1);
 			value = save.substr(save.find('|') + 2, save.size());
-			for (size_t i = 0; i < value.size(); i++)
-			{
-				if (value[i] == ' ' && i != std::string::npos)
-					space = false;
-			}
-			for (size_t i = 0; i < date.size(); i++)
-			{
-				if (date[i] == ' ')
-					space = false;
-			}
-			if(date.empty() || value.empty() || space == false)
+			if(date.empty() || value.empty())
 				std::cerr << "Error: format is invalid" << std::endl;
 			else if (verif_files(date, value) != 0)
 				std::exception();

@@ -17,7 +17,8 @@ RPN::RPN() {
 }
 
 RPN::RPN(const RPN &copy) {
-	*this = copy;
+	if (this != &copy)
+		this->nbr = copy.nbr;
 }
 
 RPN& RPN::operator=(const RPN &copy) {
