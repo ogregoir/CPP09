@@ -6,7 +6,7 @@
 /*   By: ogregoir <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 15:55:41 by ogregoir          #+#    #+#             */
-/*   Updated: 2024/10/14 16:12:44 by ogregoir         ###   ########.fr       */
+/*   Updated: 2024/10/14 16:23:14 by ogregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,7 @@ void    BitcoinExchange::convert_btc(std::string date, std::string value, Bitcoi
 			--it;
 	}
 	op = it->second * val;
-	std::cout << date << " => " << value << " = " << op << std::endl;
+	std::cout << date << " => " << val << " = " << op << std::endl;
 }
 
 int    BitcoinExchange::parse_input(char **argv)
@@ -188,7 +188,6 @@ int    BitcoinExchange::parse_input(char **argv)
 	std::string     save;
 	std::ifstream   inputFile(argv[1]);
 	std::string     date;
-	//bool			space = true;
 	std::string     value;
 	BitcoinExchange *acc(this);
 
