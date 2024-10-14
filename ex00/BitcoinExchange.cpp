@@ -6,7 +6,7 @@
 /*   By: ogregoir <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 15:55:41 by ogregoir          #+#    #+#             */
-/*   Updated: 2024/10/14 16:01:21 by ogregoir         ###   ########.fr       */
+/*   Updated: 2024/10/14 16:12:44 by ogregoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int verif_files(std::string date, std::string value)
 		std::cerr << "Error: format is invalid" << std::endl;
 		return 1;
 	}
-	
+
 	int i = date.find('-');
 	year = date.substr(0, i);
 	month = date.substr(i + 1, (date.find('-', i + 1) - (i + 1)));
@@ -84,7 +84,10 @@ int verif_files(std::string date, std::string value)
 	{
 		if (!isdigit(value[i]) && value[i] != '.' && value[i] != 32 && value[i] != '\r')
 		{
-			std::cerr << "Error: format is invalid" << std::endl;
+			if (value[i] == '-')
+				std::cerr << "Error: not a positive number." << std::endl;
+			else
+				std::cerr << "Error: format is invalid" << std::endl;
 			return 1;
 		}	
 	}
